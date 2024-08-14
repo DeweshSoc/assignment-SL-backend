@@ -27,6 +27,14 @@ const userSchema = new mongoose.Schema(
     },
     {
         timestamps: true,
+        methods: {
+            async comparePasswords(passwordToMatch: string) : Promise<Boolean>{
+                return await bcrypt.compare(
+                    passwordToMatch,
+                    this.password
+                );
+            },
+        },
     }
 );
 
@@ -41,17 +49,4 @@ userSchema.pre("save", async function (next) {
     }
 });
 
-userSchema.methods.comparePasswords = async function(passwordToMatch:string){
-    return new Promise(async (resolve, reject)=>{
-        try{
-            const result = await bcrypt.compare(passwordToMatch, this.password);
-            resolve(result);
-        }catch(err){
-            reject(err);
-        }
-    })
-}
-
-const User = mongoose.model("user", userSchema);
-
-export default User;
+export const User = mongoose.model("user", userSchema);
