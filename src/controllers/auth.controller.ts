@@ -42,9 +42,15 @@ export const authLoginController = async (
         const { email, password } = req.body;
         //console.log(email,password);
 
-        if (!isEmail(email)) {
-            return res.json(422).json({
+        if (!email || !isEmail(email)) {
+            return res.status(422).json({
                 message: "Invalid Email",
+            });
+        }
+
+        if(!password){
+            return res.status(422).json({
+                message: "Invalid Password",
             });
         }
 
@@ -93,6 +99,9 @@ export const authLoginController = async (
         await newAuth.save();
 
         res.status(200).json({
+            data:{
+                token
+            },
             message: "Login Successful",
         });
     } catch (err) {

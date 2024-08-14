@@ -7,7 +7,6 @@ export async function authenticate(req:Request, res:Response, next:NextFunction)
     if(!req.headers.authorization){
         return res.status(403).json({message:"Missing authentication credentials"});
     }
-
     const token = req.headers.authorization.split(" ")[1];
 
     if(!token){
@@ -23,11 +22,12 @@ export async function authenticate(req:Request, res:Response, next:NextFunction)
         }
 
         req.body.user = {
-            userId: payload.userId,
-            userEmail: payload.email
+            _id: payload.userId,
+            email: payload.email
         } 
         next();
     }catch(err){
-        return res.status(403).json({message:"Invalid Token"});
+        res.status(403).json({message:"Invalid Token"});
+        next(err);
     }
 }

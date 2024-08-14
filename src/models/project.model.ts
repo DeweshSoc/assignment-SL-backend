@@ -29,6 +29,7 @@ const projectSchema = new mongoose.Schema(
         status: {
             type: String,
             required: true,
+            default:"pending"
         },
         initials: {
             type: String,
