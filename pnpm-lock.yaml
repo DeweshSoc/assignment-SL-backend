@@ -14,6 +14,9 @@ dependencies:
   '@types/express':
     specifier: ^4.17.21
     version: 4.17.21
+  '@types/validator':
+    specifier: ^13.12.0
+    version: 13.12.0
   bcrypt:
     specifier: ^5.1.1
     version: 5.1.1
@@ -32,6 +35,9 @@ dependencies:
   typescript:
     specifier: ^5.5.4
     version: 5.5.4
+  validator:
+    specifier: ^13.12.0
+    version: 13.12.0
 
 packages:
 
@@ -174,6 +180,10 @@ packages:
       '@types/http-errors': 2.0.4
       '@types/node': 22.2.0
       '@types/send': 0.17.4
+    dev: false
+
+  /@types/validator@13.12.0:
+    resolution: {integrity: sha512-nH45Lk7oPIJ1RVOF6JgFI6Dy0QpHEzq4QecZhvguxYPDwT8c93prCMqAtiIttm39voZ+DDR+qkNnMpJmMBRqag==}
     dev: false
 
   /@types/webidl-conversions@7.0.3:
@@ -1164,6 +1174,11 @@ packages:
 
   /v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
+    dev: false
+
+  /validator@13.12.0:
+    resolution: {integrity: sha512-c1Q0mCiPlgdTVVVIJIrBuxNicYE+t/7oKeI9MWLj3fh/uq2Pxh/3eeWbVZ4OcGW1TUf53At0njHw5SMdA3tmMg==}
+    engines: {node: '>= 0.10'}
     dev: false
 
   /vary@1.1.2:
