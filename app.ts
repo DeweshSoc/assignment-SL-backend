@@ -24,7 +24,7 @@ app.use("/", routes);
 
 app.use("/", (req: Request, res: Response, next: NextFunction) => {
     const err = new Error(
-        "BAD REQUEST : invalid endpoint url => " + req.url
+        `BAD REQUEST : invalid endpoint url => ${req.method} - ${req.url}`
     ) as ErrorResponse;
     err.status = 400;
     next(err);
