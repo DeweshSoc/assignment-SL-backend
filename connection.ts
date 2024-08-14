@@ -29,8 +29,6 @@ async function connectToDB() {
         // error during initial connection setup
         console.error(`MONGOOSE => connection could not be established. More details: ${err}`);
         throw err;
-    } finally {
-        await mongoose.disconnect();
     }
 }
 
