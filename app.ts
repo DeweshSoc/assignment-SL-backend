@@ -5,7 +5,7 @@ import express, { Request, Response, NextFunction } from "express";
 
 import routes from "./src/routes";
 import { ErrorResponse } from "./src/interfaces";
-// import rdsConnection from "./connection";
+import connectToDB from "./connection";
 
 const app = express();
 
@@ -27,7 +27,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 
 // handle requests
-
 app.use("/", routes);
 
 app.use("/", (req: Request, res: Response, next: NextFunction) => {
@@ -35,7 +34,7 @@ app.use("/", (req: Request, res: Response, next: NextFunction) => {
         "BAD REQUEST : invalid endpoint url => " + req.url
     ) as ErrorResponse;
     err.status = 400;
-    throw err;
+    next(err);
 });
 
 // Error Handling
@@ -59,14 +58,13 @@ app.use(
 
 const startServer = async () => {
     try {
-        // await rdsConnection.authenticate();
-        // console.log("connected to database");
+        await connectToDB();
         let port = process.env.PORT || "5000";
         app.listen(port, () => {
             console.log(`Server up at ${port}`);
         });
     } catch (err) {
-        console.error("some error occured", err);
+        console.error("SERVER => error occured", err);
     }
 };
 
