@@ -33,6 +33,10 @@ const projectSchema = new mongoose.Schema(
         },
         initials: {
             type: String,
+        },
+        colorHex:{
+            type: String,
+            default:"#f8a01d"
         }
     },
     {
