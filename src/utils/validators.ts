@@ -1,4 +1,4 @@
-export const validateProjectTitle = (title) => {
+export const validateProjectTitle = (title:string) => {
     const allowed =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
     const trimmedTitle = title.trim();

@@ -1,6 +1,6 @@
 import { validateProjectTitle } from "./validators"
 
-export const generateInitials = (title) => {
+export const generateInitials = (title:string) => {
     if(validateProjectTitle(title)){
         const spaceSeperated = title.split(" ");
         return (spaceSeperated.length > 1) ? (spaceSeperated[0][0] + spaceSeperated[1][0]) : (spaceSeperated[0][0] + spaceSeperated[0][1]);
