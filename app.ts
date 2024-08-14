@@ -40,7 +40,8 @@ app.use("/", (req: Request, res: Response, next: NextFunction) => {
 // Error Handling
 app.use(
     (err: ErrorResponse, req: Request, res: Response, next: NextFunction) => {
-        console.log(`\x1b[41m\x1b[1m\x1b[97m `, req.body, err, `\x1b[0m`);
+        console.log(`\x1b[41m\x1b[1m\x1b[97m `, req.body, err.message, `\x1b[0m`);
+        console.log(err);
         err.message = err.status ? err.message : "Some server error occured.";
         res.status(err.status || 500).json({
             error: {

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { CallbackError } from "mongoose";
 import bcrypt from "bcrypt";
 
 const { String, ObjectId } = mongoose.Schema.Types;
@@ -37,11 +37,11 @@ userSchema.pre("save", async function (next) {
         user.password = await bcrypt.hash(user.password, SALT_ROUNDS);
         next();
     } catch (err) {
-        next(err);
+        next(err as CallbackError);
     }
 });
 
-userSchema.methods.comparePasswords = async function(passwordToMatch){
+userSchema.methods.comparePasswords = async function(passwordToMatch:string){
     return new Promise(async (resolve, reject)=>{
         try{
             const result = await bcrypt.compare(passwordToMatch, this.password);
