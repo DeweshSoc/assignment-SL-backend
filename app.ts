@@ -1,6 +1,7 @@
 import * as path from "path";
 
 import "dotenv/config";
+import cors from "cors"
 import express, { Request, Response, NextFunction } from "express";
 
 import routes from "./src/routes";
@@ -9,21 +10,13 @@ import connectToDB from "./connection";
 
 const app = express();
 
+// cors
+app.use(cors());
+
+
 // configurations
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "src", "public")));
-
-// cors
-app.use((req: Request, res: Response, next: NextFunction) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Content-Type, Authorization"
-    );
-    next();
-});
-
 
 
 // handle requests
