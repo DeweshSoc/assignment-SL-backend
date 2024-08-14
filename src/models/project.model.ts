@@ -49,6 +49,5 @@ projectSchema.pre("save", async function (next) {
     next(Error("invalid project title"));
 });
 
-const Project = mongoose.model("project", projectSchema);
+export const Project = mongoose.model("project", projectSchema);
 
-export default Project;

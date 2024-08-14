@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Project from "./project.model";
+import {Project} from "./project.model";
 
 const { String, ObjectId } = mongoose.Schema.Types;
 
@@ -52,6 +52,5 @@ episodeSchema.post("save", async function () {
     }
 });
 
-const Episode = mongoose.model("episode", episodeSchema);
+export const Episode = mongoose.model("episode", episodeSchema);
 
-export default Episode;
