@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { validateProjectTitle } from "../utils";
 import { generateInitials } from "../utils/generators";
+import { User } from "./user.model";
 
 const { String, ObjectId } = mongoose.Schema.Types;
 
@@ -52,6 +53,23 @@ projectSchema.pre("save", async function (next) {
         next();
     }
     next(Error("invalid project title"));
+});
+
+projectSchema.post("save", async function () {
+    try {
+        const project = this;
+        if (project) {
+            const user = await User.findOne({ _id: project.user });
+            if (!user) {
+                throw Error("invalid user id in project" + project._id);
+            }
+            user.projects = [...user.projects, project._id];
+            await user.save();
+            console.log("Add project to user");
+        }
+    } catch (err) {
+        console.error(err);
+    }
 });
 
 export const Project = mongoose.model("project", projectSchema);
