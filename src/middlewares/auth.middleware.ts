@@ -15,7 +15,13 @@ export async function authenticate(req:Request, res:Response, next:NextFunction)
 
     try{
         const payload:any = jwt.verify(token,process.env.JWT_SECRET as string);
-        const expiresAt = (await Auth.findOne({user:payload.userId},{expires:1}))?.expires;
+        const auth = await Auth.findOne({user:payload.userId},{expires:1});
+        if(!auth){
+            return res.status(404).json({
+                message:"User not found"
+            })
+        }
+        const expiresAt = auth?.expires;
 
         if(moment(expiresAt).isBefore(moment(Date.now()))){
             return res.status(403).json({message:"Token expired"});
