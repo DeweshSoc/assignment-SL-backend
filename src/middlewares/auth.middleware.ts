@@ -17,14 +17,14 @@ export async function authenticate(req:Request, res:Response, next:NextFunction)
         const payload:any = jwt.verify(token,process.env.JWT_SECRET as string);
         const auth = await Auth.findOne({user:payload.userId},{expires:1});
         if(!auth){
-            return res.status(404).json({
-                message:"User not found"
+            return res.status(403).json({
+                message:"Forbidden"
             })
         }
-        const expiresAt = auth?.expires;
+        const expireAt = auth?.expireAt;
 
-        if(moment(expiresAt).isBefore(moment(Date.now()))){
-            return res.status(403).json({message:"Token expired"});
+        if(moment(expireAt).isBefore(moment(Date.now()))){
+            return res.status(403).json({message:"Forbidden"});
         }
 
         req.body.user = {
