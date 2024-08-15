@@ -14,7 +14,7 @@ const authSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        expires: {
+        expireAt: {
             type: Date,
             required: true,
         },
@@ -23,6 +23,8 @@ const authSchema = new mongoose.Schema(
         timestamps: true,
     }
 );
+
+authSchema.index({ expireAt: 1 }, { expireAfterSeconds: 0 });
 
 export const Auth = mongoose.model('auth',authSchema);
 
