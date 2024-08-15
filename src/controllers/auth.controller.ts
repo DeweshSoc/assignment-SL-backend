@@ -75,6 +75,10 @@ export const authLoginController = async (
         const duplicate = await Auth.findOne({user:user._id});
         if (duplicate && moment(duplicate.expires).isAfter(moment(Date.now()))) {
             return res.status(200).json({
+                data:{
+                    token:duplicate.token,
+                    hasProject: user.projects.length > 0
+                },
                 message:"Already logged in"
             });
         }
@@ -99,8 +103,9 @@ export const authLoginController = async (
         await newAuth.save();
 
         res.status(200).json({
-            data:{
-                token
+            data: {
+                token,
+                hasProject: user.projects.length > 0
             },
             message: "Login Successful",
         });
