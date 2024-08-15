@@ -48,14 +48,14 @@ export const authLoginController = async (
             });
         }
 
-        if(!password){
+        if (!password) {
             return res.status(422).json({
                 message: "Invalid Password",
             });
         }
 
         const user = await User.findOne({
-            email
+            email,
         });
 
         if (!user) {
@@ -72,21 +72,24 @@ export const authLoginController = async (
             });
         }
 
-        const duplicate = await Auth.findOne({user:user._id});
-        if (duplicate && moment(duplicate.expires).isAfter(moment(Date.now()))) {
-            return res.status(200).json({
-                data:{
-                    token:duplicate.token,
-                    hasProject: user.projects.length > 0
-                },
-                message:"Already logged in"
-            });
+        const duplicate = await Auth.findOne({ user: user._id });
+        if (duplicate) {
+            if (moment(duplicate.expireAt).isAfter(moment(Date.now()))) {
+                return res.status(200).json({
+                    data: {
+                        token: duplicate.token,
+                        hasProject: user.projects.length > 0,
+                    },
+                    message: "Already logged in",
+                });
+            } else {
+            }
         }
 
         const token = jwt.sign(
             {
                 userId: user._id,
-                email: user.email
+                email: user.email,
             },
             process.env.JWT_SECRET as string,
             {
@@ -97,7 +100,7 @@ export const authLoginController = async (
         const newAuth = new Auth({
             user: user._id,
             token,
-            expires: new Date(moment().add(2,'days').toString())
+            expireAt: new Date(moment().add(2, "days").toString()),
         });
 
         await newAuth.save();
@@ -105,9 +108,54 @@ export const authLoginController = async (
         res.status(200).json({
             data: {
                 token,
-                hasProject: user.projects.length > 0
+                hasProject: user.projects.length > 0,
             },
             message: "Login Successful",
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const logoutController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    if (!req.headers.authorization) {
+        return res
+            .status(403)
+            .json({ message: "Missing authentication credentials" });
+    }
+    const token = req.headers.authorization.split(" ")[1];
+
+    if (!token) {
+        return res
+            .status(403)
+            .json({ message: "Missing authentication credentials" });
+    }
+
+    try {
+        const payload: any = jwt.verify(
+            token,
+            process.env.JWT_SECRET as string
+        );
+        const auth = await Auth.findOne(
+            { user: payload.userId },
+            { expires: 1 }
+        );
+        if (!auth) {
+            return res.status(200).json({
+                message: "Logged Out",
+            });
+        }
+
+        auth.expireAt = new Date();
+
+        await auth.save();
+
+        return res.status(200).json({
+            message: "Logged Out",
         });
     } catch (err) {
         next(err);
