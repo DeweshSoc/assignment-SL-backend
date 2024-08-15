@@ -43,9 +43,13 @@ export const createProjectController = async (req:Request,res:Response,next:Next
             colorHex: randomColorGenerator()
         });
         
-        await newProj.save();    
+        const savedDoc = await newProj.save();    
         return res.status(200).json({
-            message:"Project created successfully"
+            message:"Project created successfully",
+            data:{
+                hasProject:true,
+                project:savedDoc
+            }
         })
 
     }catch(err){
