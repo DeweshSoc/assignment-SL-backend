@@ -83,6 +83,9 @@ export const authLoginController = async (
                     message: "Already logged in",
                 });
             } else {
+                return res.status(400).json({
+                    message: "Duplicate seesion, Please try after some time.",
+                });
             }
         }
 
@@ -124,15 +127,15 @@ export const logoutController = async (
 ) => {
     if (!req.headers.authorization) {
         return res
-            .status(403)
+            .status(422)
             .json({ message: "Missing authentication credentials" });
     }
     const token = req.headers.authorization.split(" ")[1];
 
     if (!token) {
         return res
-            .status(403)
-            .json({ message: "Missing authentication credentials" });
+            .status(422)
+            .json({ message: "Missing Token" });
     }
 
     try {
