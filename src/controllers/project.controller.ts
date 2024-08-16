@@ -27,14 +27,15 @@ export const createProjectController = async (req:Request,res:Response,next:Next
     try{
         const { user, projectTitle } = req.body;
         
+        if (!validateProjectTitle(projectTitle)) {
+            return res.status(400).json({ message: "Invalid project title" });
+        }
+        
         const duplicateProject = await Project.findOne({ title: projectTitle, user: user._id});
         if (duplicateProject) {
             return res.status(400).json({ message: "Duplicate Project" });
         }
 
-        if (!validateProjectTitle(projectTitle)) {
-            return res.status(400).json({ message: "Invalid project title" });
-        }
 
         const newProj = new Project({
             user: user._id,
