@@ -16,6 +16,11 @@ const episodeSchema = new mongoose.Schema(
             ref: "Project",
             index: true,
         },
+        title:{
+            type:String,
+            required:true,
+            index:true
+        },
         status: {
             type: String,
             required: true,
@@ -39,7 +44,7 @@ const episodeSchema = new mongoose.Schema(
 episodeSchema.post("save", async function () {
     try {
         const episode = this;
-        if (episode && this.isNew) {
+        if (episode) {
             const project = await Project.findOne({ _id: episode.project });
             if (!project) {
                 throw Error("invalid project id in episode" + episode._id);
