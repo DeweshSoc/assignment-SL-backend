@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { validateProjectTitle } from "../utils";
-import {User} from "../models/user.model";
+import { User } from "../models/user.model";
 
 export const updateUserController = async (
     req: Request,
@@ -10,7 +10,7 @@ export const updateUserController = async (
     try {
         const { user, username } = req.body;
 
-        if (!username ) {
+        if (!username) {
             return res.status(422).json({
                 message: "Missing Parameters",
             });
@@ -23,12 +23,12 @@ export const updateUserController = async (
         await User.findByIdAndUpdate(
             { _id: user._id },
             {
-                username
+                username,
             }
         );
         return res.status(200).json({
-            data:{
-                username
+            data: {
+                username,
             },
             message: "Username updated successfully",
         });

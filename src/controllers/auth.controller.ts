@@ -113,8 +113,8 @@ export const authLoginController = async (
         res.status(200).json({
             data: {
                 token,
-                username:user.username,
-                email:user.email,
+                username: user.username,
+                email: user.email,
                 hasProject: user.projects.length > 0,
             },
             message: "Login Successful",
@@ -137,9 +137,7 @@ export const logoutController = async (
     const token = req.headers.authorization.split(" ")[1];
 
     if (!token) {
-        return res
-            .status(422)
-            .json({ message: "Missing Token" });
+        return res.status(422).json({ message: "Missing Token" });
     }
 
     try {

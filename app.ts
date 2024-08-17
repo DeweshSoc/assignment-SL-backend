@@ -1,7 +1,7 @@
 import * as path from "path";
 
 import "dotenv/config";
-import cors from "cors"
+import cors from "cors";
 import express, { Request, Response, NextFunction } from "express";
 
 import routes from "./src/routes";
@@ -13,11 +13,9 @@ const app = express();
 // cors
 app.use(cors());
 
-
 // configurations
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "src", "public")));
-
 
 // handle requests
 app.use("/", routes);
@@ -33,7 +31,12 @@ app.use("/", (req: Request, res: Response, next: NextFunction) => {
 // Error Handling
 app.use(
     (err: ErrorResponse, req: Request, res: Response, next: NextFunction) => {
-        console.log(`\x1b[41m\x1b[1m\x1b[97m `, req.body, err.message, `\x1b[0m`);
+        console.log(
+            `\x1b[41m\x1b[1m\x1b[97m `,
+            req.body,
+            err.message,
+            `\x1b[0m`
+        );
         console.log(err);
         err.message = err.status ? err.message : "Some server error occured.";
         res.status(err.status || 500).json({
@@ -46,9 +49,6 @@ app.use(
 );
 
 // connect to DB and spin server
-
-
-
 
 const startServer = async () => {
     try {

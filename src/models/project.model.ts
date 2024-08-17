@@ -11,7 +11,7 @@ const projectSchema = new mongoose.Schema(
             type: ObjectId,
             ref: "User",
             index: true,
-            required:true
+            required: true,
         },
         title: {
             type: String,
@@ -30,15 +30,15 @@ const projectSchema = new mongoose.Schema(
         status: {
             type: String,
             required: true,
-            default:"pending"
+            default: "pending",
         },
         initials: {
             type: String,
         },
-        colorHex:{
+        colorHex: {
             type: String,
-            default:"#f8a01d"
-        }
+            default: "#f8a01d",
+        },
     },
     {
         timestamps: true,
@@ -46,7 +46,7 @@ const projectSchema = new mongoose.Schema(
 );
 
 projectSchema.pre("save", async function (next) {
-    if(!this.isModified("title")) next();
+    if (!this.isModified("title")) next();
     const projectTitle = this.title;
     if (validateProjectTitle(projectTitle)) {
         this.initials = generateInitials(projectTitle);
@@ -73,4 +73,3 @@ projectSchema.post("save", async function () {
 });
 
 export const Project = mongoose.model("project", projectSchema);
-

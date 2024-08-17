@@ -1,14 +1,16 @@
-import { validateProjectTitle } from "./validators"
-import superheros from "./names.json"
+import { validateProjectTitle } from "./validators";
+import superheros from "./names.json";
 
-export const generateInitials = (title:string) => {
-    if(validateProjectTitle(title)){
+export const generateInitials = (title: string) => {
+    if (validateProjectTitle(title)) {
         const spaceSeperated = title.trim().split(" ");
         console.log(spaceSeperated);
-        return (spaceSeperated.length > 1) ? (spaceSeperated[0][0] + spaceSeperated[1][0]) : (spaceSeperated[0][0] + spaceSeperated[0][1]);
+        return spaceSeperated.length > 1
+            ? spaceSeperated[0][0] + spaceSeperated[1][0]
+            : spaceSeperated[0][0] + spaceSeperated[0][1];
     }
     return null;
-}
+};
 
 export function randomColorGenerator() {
     const avatarColors = [
@@ -32,8 +34,8 @@ export function randomColorGenerator() {
     return avatarColors[idx % avatarColors.length];
 }
 
-export function generateSuperName(){
+export function generateSuperName() {
     const superNames = superheros.names;
     const idx = Math.floor(Math.random() * (100000 - 1) + 1);
-    return superNames[idx % superNames.length];   
+    return superNames[idx % superNames.length];
 }

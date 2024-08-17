@@ -16,9 +16,9 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        username:{
-            type:String,
-            default:"username"
+        username: {
+            type: String,
+            default: "username",
         },
         projects: {
             type: [
@@ -33,11 +33,8 @@ const userSchema = new mongoose.Schema(
     {
         timestamps: true,
         methods: {
-            async comparePasswords(passwordToMatch: string) : Promise<Boolean>{
-                return await bcrypt.compare(
-                    passwordToMatch,
-                    this.password
-                );
+            async comparePasswords(passwordToMatch: string): Promise<Boolean> {
+                return await bcrypt.compare(passwordToMatch, this.password);
             },
         },
     }
@@ -46,7 +43,7 @@ const userSchema = new mongoose.Schema(
 userSchema.pre("save", async function (next) {
     try {
         const user = this;
-        if(this.isNew){
+        if (this.isNew) {
             user.username = generateSuperName();
         }
         if (!user.isModified("password")) return next();

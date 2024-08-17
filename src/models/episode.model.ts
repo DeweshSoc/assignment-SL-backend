@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {Project} from "./project.model";
+import { Project } from "./project.model";
 
 const { String, ObjectId } = mongoose.Schema.Types;
 
@@ -16,10 +16,10 @@ const episodeSchema = new mongoose.Schema(
             ref: "Project",
             index: true,
         },
-        title:{
-            type:String,
-            required:true,
-            index:true
+        title: {
+            type: String,
+            required: true,
+            index: true,
         },
         status: {
             type: String,
@@ -29,10 +29,10 @@ const episodeSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        isDeleted:{
-            type:Boolean,
-            required:true,
-            default:false
+        isDeleted: {
+            type: Boolean,
+            required: true,
+            default: false,
         },
         uploadedAt: {
             type: Date,
@@ -63,4 +63,3 @@ episodeSchema.post("save", async function () {
 });
 
 export const Episode = mongoose.model("episode", episodeSchema);
-
