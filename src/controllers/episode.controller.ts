@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { Episode } from "../models";
+import { Episode, Project } from "../models";
 import { validateProjectTitle } from "../utils";
 
 export const createEpisodeController = async (
@@ -10,10 +10,10 @@ export const createEpisodeController = async (
     try {
         const { user, episodeName, transcript, projectId } = req.body;
 
-        if(!episodeName || !transcript || !projectId){
+        if (!episodeName || !transcript || !projectId) {
             return res.status(422).json({
-                message:"Missing Parameters"
-            })
+                message: "Missing Parameters",
+            });
         }
 
         if (!validateProjectTitle(episodeName)) {
@@ -23,27 +23,26 @@ export const createEpisodeController = async (
         const duplicateEpisode = await Episode.findOne({
             user: user._id,
             title: episodeName,
-            project: projectId
+            project: projectId,
         });
 
         if (duplicateEpisode) {
             return res.status(400).json({ message: "Duplicate Episode" });
         }
 
-
         const newEpi = new Episode({
             user: user._id,
-            project:projectId,
+            project: projectId,
             title: episodeName,
             transcript,
-            status:"Done"
+            status: "Done",
         });
 
         const savedDoc = await newEpi.save();
         return res.status(200).json({
             message: "Episode created successfully",
             data: {
-                hasEpisode:true,
+                hasEpisode: true,
                 episode: savedDoc,
             },
         });
@@ -70,11 +69,14 @@ export const updateEpisodeController = async (
             return res.status(400).json({ message: "Invalid Episode Name" });
         }
 
-        await Episode.findByIdAndUpdate({_id:episode._id, project:projectId},{
-            title:episode.title,
-            transcript:episode.transcript,
-            status:episode.status
-        })
+        await Episode.findByIdAndUpdate(
+            { _id: episode._id, project: projectId },
+            {
+                title: episode.title,
+                transcript: episode.transcript,
+                status: episode.status,
+            }
+        );
         return res.status(200).json({
             message: "Episode updated successfully",
         });
@@ -83,15 +85,18 @@ export const updateEpisodeController = async (
     }
 };
 
-
 export const getAllEpisodesController = async (
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
     try {
-        const { user,projectId } = req.body;
-        const episodes = await Episode.find({ user: user._id, project:projectId, isDeleted:false});
+        const { user, projectId } = req.body;
+        const episodes = await Episode.find({
+            user: user._id,
+            project: projectId,
+            isDeleted: false,
+        });
         return res.status(200).json({
             data: {
                 episodes,
@@ -103,8 +108,6 @@ export const getAllEpisodesController = async (
     }
 };
 
-
-
 export const getEpisodesByIdController = async (
     req: Request,
     res: Response,
@@ -113,7 +116,7 @@ export const getEpisodesByIdController = async (
     try {
         const { user, projectId, episodeId } = req.body;
         const episode = await Episode.findOne({
-            _id:episodeId,
+            _id: episodeId,
             user: user._id,
             project: projectId,
         });
@@ -145,7 +148,16 @@ export const deleteEpisodeController = async (
         await Episode.findByIdAndUpdate(
             { _id: episodeId, project: projectId },
             {
-                isDeleted:true
+                isDeleted: true,
+            }
+        );
+
+        const project = await Project.findOne({ _id: projectId });
+        const newEpisodes = project?.episodes?.filter((ep) => ep != episodeId);
+        await Project.findOneAndUpdate(
+            { _id: projectId },
+            {
+                episodes: newEpisodes,
             }
         );
         return res.status(200).json({
