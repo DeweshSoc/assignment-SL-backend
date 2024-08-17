@@ -91,7 +91,7 @@ export const getAllEpisodesController = async (
 ) => {
     try {
         const { user,projectId } = req.body;
-        const episodes = await Episode.find({ user: user._id, project:projectId});
+        const episodes = await Episode.find({ user: user._id, project:projectId, isDeleted:false});
         return res.status(200).json({
             data: {
                 episodes,
@@ -122,6 +122,34 @@ export const getEpisodesByIdController = async (
                 episode,
                 message: `Episode fetch successful`,
             },
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const deleteEpisodeController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const { user, episodeId, projectId } = req.body;
+
+        if (!episodeId || !projectId) {
+            return res.status(422).json({
+                message: "Missing Parameters",
+            });
+        }
+
+        await Episode.findByIdAndUpdate(
+            { _id: episodeId, project: projectId },
+            {
+                isDeleted:true
+            }
+        );
+        return res.status(200).json({
+            message: "Episode deleted successfully",
         });
     } catch (err) {
         next(err);

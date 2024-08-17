@@ -3,7 +3,8 @@ import {
     createEpisodeController,
     getAllEpisodesController,
     updateEpisodeController,
-    getEpisodesByIdController
+    getEpisodesByIdController,
+    deleteEpisodeController
 } from "../controllers";
 
 const router = express.Router();
@@ -14,5 +15,6 @@ router.post("/create",createEpisodeController);
 router.post("/update", updateEpisodeController);
 router.post("/",getEpisodesByIdController);
 router.post("/all",getAllEpisodesController);
+router.post("/delete",deleteEpisodeController);
 
 export const episodeRoute = router;

@@ -29,6 +29,11 @@ const episodeSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        isDeleted:{
+            type:Boolean,
+            required:true,
+            default:false
+        },
         uploadedAt: {
             type: Date,
             default: Date.now,
