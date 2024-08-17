@@ -19,6 +19,13 @@ export const authSignupController = async (
             });
         }
 
+        const duplicate = await User.findOne({email});
+        if(duplicate){
+            return res.status(400).json({
+                message:"User already signed up"
+            })
+        }
+
         const newUser = new User({
             email,
             password,
