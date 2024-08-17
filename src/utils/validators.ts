@@ -1,6 +1,6 @@
 export const validateProjectTitle = (title:string) => {
     const allowed =
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 ";
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 -:_";
     const trimmedTitle = title.trim();
     if (trimmedTitle.length < 2) return false;
     for(let char of trimmedTitle){

@@ -52,6 +52,37 @@ export const createEpisodeController = async (
     }
 };
 
+export const updateEpisodeController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const { user, episode, projectId } = req.body;
+
+        if (!episode || !projectId) {
+            return res.status(422).json({
+                message: "Missing Parameters",
+            });
+        }
+
+        if (!validateProjectTitle(episode.title)) {
+            return res.status(400).json({ message: "Invalid Episode Name" });
+        }
+
+        await Episode.findByIdAndUpdate({_id:episode._id, project:projectId},{
+            title:episode.title,
+            transcript:episode.transcript,
+            status:episode.status
+        })
+        return res.status(200).json({
+            message: "Episode updated successfully",
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
 
 export const getAllEpisodesController = async (
     req: Request,
@@ -65,6 +96,31 @@ export const getAllEpisodesController = async (
             data: {
                 episodes,
                 message: `Fetched ${episodes.length} episodes`,
+            },
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+
+
+export const getEpisodesByIdController = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const { user, projectId, episodeId } = req.body;
+        const episode = await Episode.findOne({
+            _id:episodeId,
+            user: user._id,
+            project: projectId,
+        });
+        return res.status(200).json({
+            data: {
+                episode,
+                message: `Episode fetch successful`,
             },
         });
     } catch (err) {
