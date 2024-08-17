@@ -1,5 +1,6 @@
 import mongoose, { CallbackError } from "mongoose";
 import bcrypt from "bcrypt";
+import { generateSuperName } from "../utils/generators";
 
 const { String, ObjectId } = mongoose.Schema.Types;
 const SALT_ROUNDS = 10;
@@ -14,6 +15,10 @@ const userSchema = new mongoose.Schema(
         password: {
             type: String,
             required: true,
+        },
+        username:{
+            type:String,
+            default:"username"
         },
         projects: {
             type: [
@@ -41,6 +46,9 @@ const userSchema = new mongoose.Schema(
 userSchema.pre("save", async function (next) {
     try {
         const user = this;
+        if(this.isNew){
+            user.username = generateSuperName();
+        }
         if (!user.isModified("password")) return next();
         user.password = await bcrypt.hash(user.password, SALT_ROUNDS);
         next();

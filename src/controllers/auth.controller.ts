@@ -78,6 +78,8 @@ export const authLoginController = async (
                 return res.status(200).json({
                     data: {
                         token: duplicate.token,
+                        username: user.username,
+                        email: user.email,
                         hasProject: user.projects.length > 0,
                     },
                     message: "Already logged in",
@@ -111,6 +113,8 @@ export const authLoginController = async (
         res.status(200).json({
             data: {
                 token,
+                username:user.username,
+                email:user.email,
                 hasProject: user.projects.length > 0,
             },
             message: "Login Successful",
