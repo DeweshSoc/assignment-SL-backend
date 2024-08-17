@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { Project } from "../models";
 import { validateProjectTitle } from "../utils";
-import { randomColorGenerator } from "../utils/colorGenerator";
+import { randomColorGenerator } from "../utils";
 
 
 export const getAllProjects = async (req:Request,res:Response,next:NextFunction) => {
