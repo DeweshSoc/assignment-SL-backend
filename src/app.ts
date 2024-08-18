@@ -4,8 +4,8 @@ import "dotenv/config";
 import cors from "cors";
 import express, { Request, Response, NextFunction } from "express";
 
-import routes from "./src/routes";
-import { ErrorResponse } from "./src/interfaces";
+import routes from "./routes";
+import { ErrorResponse } from "./interfaces";
 import connectToDB from "./connection";
 
 const app = express();

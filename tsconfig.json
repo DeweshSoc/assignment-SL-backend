@@ -3,7 +3,9 @@
     "compilerOptions": {
         "preserveConstEnums": true,
         "resolveJsonModule": true,
+        "outDir": "./dist",
+        "rootDir": "./src"
     },
     "include": ["src/**/*"],
-    "exclude": ["**/*.spec.ts", "node_modules"]
+    "exclude": ["**/*.spec.ts", "node_modules","dist"]
 }
