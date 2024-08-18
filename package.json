@@ -3,11 +3,11 @@
     "version": "1.0.0",
     "description": "backend for SL assignment",
     "source": "src/app.ts",
-    "type": "module",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "lint": "tsc",
-        "start": "ts-node src/app.ts"
+        "dev": "ts-node src/app.ts",
+        "build": "tsc",
+        "start": "tsc && node dist/app.js"
     },
     "keywords": [],
     "author": "",
