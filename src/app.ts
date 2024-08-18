@@ -2,10 +2,11 @@ import * as path from "path";
 
 import "dotenv/config";
 import cors from "cors";
-import express, { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
+import express from "express";
 
 import routes from "./routes";
-import { ErrorResponse } from "./interfaces";
+import type { ErrorResponse } from "./interfaces";
 import connectToDB from "./connection";
 
 const app = express();

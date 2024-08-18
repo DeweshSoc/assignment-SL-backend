@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import { Episode, Project } from "../models";
 import { validateProjectTitle } from "../utils";
 

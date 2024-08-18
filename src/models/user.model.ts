@@ -1,4 +1,5 @@
-import mongoose, { CallbackError } from "mongoose";
+import mongoose from "mongoose";
+import type  { CallbackError } from "mongoose";
 import bcrypt from "bcrypt";
 import { generateSuperName } from "../utils/generators";
 

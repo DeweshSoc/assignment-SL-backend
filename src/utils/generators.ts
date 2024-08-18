@@ -1,13 +1,27 @@
 import { validateProjectTitle } from "./validators";
 import superheros from "./names.json";
 
-export const generateInitials = (title: string) => {
+export const generateInitials = (title: string): string | null => {
     if (validateProjectTitle(title)) {
         const spaceSeperated = title.trim().split(" ");
-        console.log(spaceSeperated);
-        return spaceSeperated.length > 1
-            ? spaceSeperated[0][0] + spaceSeperated[1][0]
-            : spaceSeperated[0][0] + spaceSeperated[0][1];
+        let ret = "";
+        if (spaceSeperated.length > 1) {
+            const firstWordFirstChar =
+                spaceSeperated[0] && spaceSeperated[0][0]
+                    ? spaceSeperated[0][0]
+                    : "";
+            const secondWordFirstChar =
+                spaceSeperated[1] && spaceSeperated[1][0]
+                    ? spaceSeperated[1][0]
+                    : "";
+            ret = firstWordFirstChar + secondWordFirstChar;
+        } else {
+            ret =
+                spaceSeperated[0] && spaceSeperated[0][1]
+                    ? spaceSeperated[0][0] + spaceSeperated[0][1]
+                    : "";
+        }
+        return ret;
     }
     return null;
 };
@@ -34,8 +48,8 @@ export function randomColorGenerator() {
     return avatarColors[idx % avatarColors.length];
 }
 
-export function generateSuperName() {
+export function generateSuperName(): string {
     const superNames = superheros.names;
     const idx = Math.floor(Math.random() * (100000 - 1) + 1);
-    return superNames[idx % superNames.length];
+    return superNames[idx % superNames.length] as string;
 }
