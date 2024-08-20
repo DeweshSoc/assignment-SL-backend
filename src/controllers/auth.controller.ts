@@ -13,9 +13,15 @@ export const authSignupController = async (
     try {
         const { email, password } = req.body;
 
-        if (!isEmail(email)) {
-            return res.json(422).json({
+        if (!email || !isEmail(email)) {
+            return res.status(422).json({
                 message: "Invalid Email",
+            });
+        }
+
+        if (!password) {
+            return res.status(422).json({
+                message: "Invalid Password",
             });
         }
 
